@@ -9,3 +9,5 @@ pandas
 pytest
 tox
 flake8          # in order to automatically check writing styles of code
+flask
+gunicorn
