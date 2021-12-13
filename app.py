@@ -19,11 +19,15 @@ def read_params(config_path):
 
 def predict(data):
     config = read_params(paramas_path)
-    model_dir_path = config("webapp_model_dir")
+    print("read config")
+    model_dir_path = config["webapp_model_dir"]
+    print("read config dir")
     model = joblib.load(model_dir_path)
-    prediction = model.predict(data)
+    print("path")
+    prediction = model.predict(data).tolist()[0]
+
     print(prediction)
-    return prediction[0]
+    return prediction
 
 def api_response(request):
     try:
@@ -41,8 +45,12 @@ def index():
     if request.method == "POST":
         try:
             if request.form:
-                data=dict(request.form).values()
-                data=[list(map(float,data))]
+                data=dict(request.form)
+                print(type(data))
+                #data = ([float(val) for val in data.values()])
+                data=[list(map(float, data.values()))]
+                print(data)
+
                 response = predict(data)
                 return render_template("index.html", response=response)
 
